@@ -2,6 +2,8 @@
 
 A project selector for TMUX. This plugin allows changing projects by creating a new session for project launched.
 
+![Demo](./tmux.proj-select.gif)
+
 ## Installation
 
 Using [TPM](https://github.com/tmux-plugins/tpm), add the following line to the `.tmux.conf`
