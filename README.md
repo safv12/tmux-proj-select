@@ -2,6 +2,14 @@
 
 A project selector for TMUX. This plugin allows changing projects by creating a new session for project launched.
 
+## Installation
+
+Using [TPM](https://github.com/tmux-plugins/tpm), add the following line to the `.tmux.conf`
+
+```bash
+set -g @plugin 'safv12/tmux-proj-select'
+```
+
 ## Feature
 
 - Displays the list of projects in a popup window
