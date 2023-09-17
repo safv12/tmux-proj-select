@@ -9,7 +9,8 @@ A project selector for TMUX. This plugin allows changing projects by creating a 
 
 ## Configurations
 
-| ENV name           | Default | Description                               |
-| ------------------ | ------- | ----------------------------------------- |
-| PROJECT_SELECT_DIR | `~/dev` | Root directory for all the projects       |
-| PROJECT_SELECT_CMD | `nvim`  | Default command when creating the session |
+| Variable                    | Default       | Description                                 |
+| --------------------------- | ------------- | ------------------------------------------- |
+| TMUX_PROJ_SELECT_LAUNCH_KEY | `<prefix>C-o` | Keybinding to trigger project selection     |
+| TMUX_PROJ_SELECT_DIR        | `~/Dev`       | Root directory for all the projects         |
+| TMUX_PROJ_SELECT_CMD        | `nvim`        | Command to run right after session creation |
