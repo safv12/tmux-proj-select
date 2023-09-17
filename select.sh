@@ -35,7 +35,7 @@ session_exists() {
 create_detached_session() {
     (TMUX=''
     tmux new-session -Ad -s "$session_name" -c $path_name;
-    tmux send-keys -t "$session_name" $CMD Enter;
+    tmux send-keys -t "$session_name" "$CMD" Enter;
     )
  }
 
