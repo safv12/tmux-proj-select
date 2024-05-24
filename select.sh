@@ -15,13 +15,32 @@ if [ -z "$session_name" ]; then
     exit 1
 fi
 
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $session_name -c $selected
-    exit 0
-fi
+session_exists() {
+    # checks if the $session_name exists
+    tmux has-session -t "=$session_name"
+}
 
-if ! tmux has-session -t=$session_name 2> /dev/null; then
-    tmux new-session -ds $session_name -c $path_name
-fi
+create_detached_session() {
+    (TMUX=''
+    tmux new-session -Ad -s "$session_name" -c $path_name;
+    tmux send-keys -t "$session_name" "nvim '+Telescope find_files'" Enter;
+    )
+ }
 
-tmux switch-client -t $selected_name
+create_if_needed_and_attach() {
+    if not_in_tmux; then
+        tmux new-session -As "$session_name" -c $path_name
+    else
+        if ! session_exists; then
+        create_detached_session
+        fi
+        tmux switch-client -t "$session_name"
+    fi
+}
+
+ attach_to_first_session() {
+     tmux attach -t $(tmux list-sessions -F "${session_name}" | head -n 1)
+     tmux choose-tree -Za
+}
+
+create_if_needed_and_attach || attach_to_first_session
