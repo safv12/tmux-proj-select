@@ -29,7 +29,7 @@ session_exists() {
 
 create_detached_session() {
   tmux new-session -Ad -s "$session_name" -c $selected_directory;
-  tmux send-keys -t "$session_name" "nvim '+Telescope find_files'" Enter;
+  tmux send-keys -t "$session_name" "$CMD" Enter;
 }
 
 create_if_needed_and_attach() {
