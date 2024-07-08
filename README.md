@@ -17,8 +17,8 @@ set -g @plugin 'safv12/tmux-proj-select'
 
 ## Configurations
 
-| Variable                    | Default       | Description                                 |
-| --------------------------- | ------------- | ------------------------------------------- |
-| TMUX_PROJ_SELECT_LAUNCH_KEY | `C-p`         | Keybinding to trigger project selection     |
-| TMUX_PROJ_SELECT_DIR        | `~/dev`       | Root directory for all the projects         |
-| TMUX_PROJ_SELECT_CMD        | `nvim`        | Command to run right after session creation |
+| Variable                    | Default           | Description                                 |
+| --------------------------- | ----------------  | ------------------------------------------- |
+| TMUX_PROJ_SELECT_LAUNCH_KEY | `C-p`             | Keybinding to trigger project selection     |
+| TMUX_PROJ_SELECT_DIR        | `~/dev ~/.config` | Space separated list of directories         |
+| TMUX_PROJ_SELECT_CMD        | `nvim`            | Command to run right after session creation |
