@@ -71,7 +71,24 @@ proj_selector_find_projects() {
 # Returns: selected project path (via stdout)
 proj_selector_select_with_fzf() {
     local dirs=("$@")
-    proj_selector_find_projects "${dirs[@]}" | fzf
+
+    # Fetch all active session names once (single subprocess)
+    local active_sessions
+    active_sessions=$(tmux_list_sessions 2>/dev/null || true)
+
+    local selected
+    selected=$(proj_selector_find_projects "${dirs[@]}" | while IFS= read -r proj; do
+        local session_name
+        session_name=$(proj_selector_session_name "$proj")
+        if echo "$active_sessions" | grep -qxF "$session_name"; then
+            echo "* $proj"
+        else
+            echo "  $proj"
+        fi
+    done | fzf)
+
+    # Strip the 2-character prefix ("* " or "  ") before returning
+    echo "${selected:2}"
 }
 
 # Create or switch to project session
