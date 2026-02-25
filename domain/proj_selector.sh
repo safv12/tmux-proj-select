@@ -78,9 +78,9 @@ proj_selector_select_with_fzf() {
 
     local selected
     selected=$(proj_selector_find_projects "${dirs[@]}" | while IFS= read -r proj; do
-        local session_name
-        session_name=$(proj_selector_session_name "$proj")
-        if echo "$active_sessions" | grep -qxF "$session_name"; then
+        local basename="${proj##*/}"
+        local session_name="${basename//./_}"
+        if [[ $'\n'"$active_sessions"$'\n' == *$'\n'"$session_name"$'\n'* ]]; then
             echo "* $proj"
         else
             echo "  $proj"
