@@ -49,20 +49,29 @@ proj_selector_session_name() {
 # Returns: list of project directories (via stdout), prioritized by recent usage
 proj_selector_find_projects() {
     local dirs=("$@")
-    local all_projects=$(find_directories_multi "${dirs[@]}")
 
-    # Get recent projects that exist in current search results
-    local recent_projects=$(history_list_existing | grep -Fx -f <(echo "$all_projects") 2>/dev/null || true)
+    # Get history entries that exist on disk and are within the search dirs (fast file read)
+    local recent_projects=""
+    while IFS= read -r dir; do
+        for search_dir in "${dirs[@]}"; do
+            if [[ "$dir" == "$search_dir"/* ]]; then
+                recent_projects+="$dir"$'\n'
+                break
+            fi
+        done
+    done < <(history_list_existing)
+    recent_projects="${recent_projects%$'\n'}"
 
-    # Get projects not in history
-    local other_projects=$(echo "$all_projects" | grep -Fxv -f <(echo "$recent_projects") 2>/dev/null || echo "$all_projects")
-
-    # Output recent projects first, then others
+    # Output recent projects first so fzf starts rendering immediately
     if [[ -n "$recent_projects" ]]; then
         echo "$recent_projects"
     fi
-    if [[ -n "$other_projects" ]]; then
-        echo "$other_projects"
+
+    # Stream find results directly, excluding history items already shown
+    if [[ -n "$recent_projects" ]]; then
+        find_directories_multi "${dirs[@]}" | grep -Fxv -f <(echo "$recent_projects")
+    else
+        find_directories_multi "${dirs[@]}"
     fi
 }
 
